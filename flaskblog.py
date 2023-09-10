@@ -1,33 +1,28 @@
 from flask import Flask, render_template
+import json
+
 app = Flask(__name__)
 
-posts = [
-    {
-        'title': 'Blog Post 1',
-        'author': 'Albert Einstein',
-        'content': 'Photoelectric Effect ...',
-        'date_posted': '05 June 1955'
-    },{
-        'title': 'Blog Post 2',
-        'author': 'Enrico Fermi',
-        'content': 'Where are the aliens?',
-        'date_posted': '18 May 1959'
-    }
-]
+# Function to parse JSON file
+def parse_json_file(file_path):
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+    return data
 
+# Parse the JSON file at application startup
+json_data = parse_json_file('static/blog_posts.json')
 
 #home page
 @app.route("/")
 @app.route("/home")
 def hello():
+    posts = json_data  # Access the parsed JSON data
     return render_template('home.html', title="home", posts=posts)
 
 #about page
 @app.route("/about")
 def about():
     return render_template('about.html', title="about")
-
-
 
 if __name__ == '__main__':
     app.run(debug=False)
