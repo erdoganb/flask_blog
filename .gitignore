@@ -1,5 +1,5 @@
 .DS_Store
 __pycache__/
-flaskblog/
 .vscode
-boru/
+flaskvenv/
+__pycache__
