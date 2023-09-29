@@ -3,4 +3,3 @@ __pycache__/
 .vscode
 flaskvenv/
 __pycache__
-run.py
