@@ -19,6 +19,7 @@ def home():
 
 # about page
 @app.route("/about")
+@login_required
 def about():
     return render_template('about.html', title="about")
 
@@ -163,6 +164,23 @@ user_list = ["Albert Einstein",
              "Jane Goodall",
              "Charles Darwin",
              "Ada Lovelace"]
+
+
+
+
+@app.route('/noclip')
+@login_required
+def noclip():
+    u = User.query.all()
+    p = Post.query.all()
+    if current_user.username=="Charles Darwin":
+        user="reis"
+        data = {'user count':len(u),'post count':len(p), 'users':u, 'posts':p}
+        print("godmode ON")
+        return render_template('godmode.html', title="god mode", data=data, user=user)
+    else:
+        flash("You are not ulu reis!", 'warning')
+        return redirect(url_for('home'))
 
 
 @app.route('/noclip/post_sample')
