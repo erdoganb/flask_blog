@@ -30,4 +30,4 @@ class Post(db.Model):
 #error was-> TypeError: Additional arguments should be named <dialectname>_<argument>, got 'nullabe'
 
     def __repr__(self):
-        return f"Post('{self.title}', '{self.date_posted}')"
+        return f"Post('{self.title}','{self.content}','{self.author}', '{self.date_posted}')"
