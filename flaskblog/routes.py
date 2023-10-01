@@ -14,8 +14,11 @@ from PIL import Image
 @app.route("/")
 @app.route("/home")
 def home():
-    posts = Post.query.all()
+    print(request.args)
+    page = request.args.get('page', default=1, type=int)
+    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=1)
     return render_template('home.html', title="home", posts=posts)
+
 
 # about page
 @app.route("/about")
@@ -40,6 +43,7 @@ def register():
         flash(f'Your account has been created! You are now able to log in!', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title="register", form=form)
+
 
 # login page
 @app.route("/login", methods=['GET', 'POST'])
@@ -72,13 +76,12 @@ def save_picture(form_picture):
     picture_fn = random_hex + f_ext
     picture_path = os.path.join(
         app.root_path, 'static/profile_pics', picture_fn)
-
     output_size = (125, 125)
     i = Image.open(form_picture)
     i.thumbnail(output_size)
     i.save(picture_path)
-
     return picture_fn
+
 
 # account
 @app.route("/account", methods=['GET', 'POST'])
@@ -153,7 +156,6 @@ def delete_post(post_id):
     return redirect(url_for('home'))
 
 
-
 # add sample data to POSTS
 path = "/Users/erdoganb/Desktop/erdo-dev/flask_blog/flaskblog/static/blog_posts.json"
 user_list = ["Albert Einstein",
@@ -164,8 +166,6 @@ user_list = ["Albert Einstein",
              "Jane Goodall",
              "Charles Darwin",
              "Ada Lovelace"]
-
-
 
 
 @app.route('/noclip')
@@ -210,7 +210,6 @@ def post_sample():
 def user_sample():
     db_check = User.query.all()
     if len(db_check) == 0:
-        
         print(len(db_check))
         def get_email(user):
             sp = user.split()
@@ -225,3 +224,12 @@ def user_sample():
     else:
         print("Database working already.")
     return "done"
+
+
+@app.route("/user/string:<username>")
+def user_posts(username):
+    page = request.args.get('page', default=1, type=int)
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = Post.query.filter_by(author=user).order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
+    
+    return render_template('user_posts.html', posts=posts, user=user)
