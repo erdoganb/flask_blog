@@ -195,17 +195,7 @@ def post_sample():
             format = '%d %b %Y'
             d = datetime.strptime(date, format).date()
             return d
-
-##BU NEDEN OLMADI BU??
-        # for i in range(10):
-        #     auth = get_author(i)
-        #     user = user_list.index(auth)
-        #     user_db = User.query.get(user)
-        #     p = Post(title=get_title(i), date_posted=get_date_posted(
-        #         i), content=get_content(i), author=user_db)
-        #     db.session.add(p)
-        #     db.session.commit()
-
+            
         for i in j:
             usr = User.query.get(user_list.index(i['author'])+1)
             p = Post(title=i['title'], content=i['content'], date_posted=get_date(i['date_posted']), author=usr)
@@ -222,7 +212,7 @@ def user_sample():
     if len(db_check) == 0:
         
         print(len(db_check))
-        def get_email(user):    
+        def get_email(user):
             sp = user.split()
             mail = sp[0] + '@' + sp[1] + ".com"
             return mail
