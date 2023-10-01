@@ -186,13 +186,13 @@ def noclip():
 @app.route('/noclip/post_sample')
 def post_sample():
     db_check = Post.query.all()
-    if db_check == 0:
+    if len(db_check) == 0:
         f = open(path, 'r')
         j = json.load(f)
 
         # need to arrange str format to regular date format
         def get_date(date):
-            format = '%d %B %Y'
+            format = '%d %b %Y'
             d = datetime.strptime(date, format).date()
             return d
 
@@ -222,7 +222,7 @@ def user_sample():
     if len(db_check) == 0:
         
         print(len(db_check))
-        def get_email(user):
+        def get_email(user):    
             sp = user.split()
             mail = sp[0] + '@' + sp[1] + ".com"
             return mail
