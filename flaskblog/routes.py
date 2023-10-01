@@ -19,6 +19,7 @@ def home():
 
 # about page
 @app.route("/about")
+@login_required
 def about():
     return render_template('about.html', title="about")
 
@@ -165,29 +166,36 @@ user_list = ["Albert Einstein",
              "Ada Lovelace"]
 
 
+
+
+@app.route('/noclip')
+@login_required
+def noclip():
+    u = User.query.all()
+    p = Post.query.all()
+    if current_user.username=="Charles Darwin":
+        user="reis"
+        data = {'user count':len(u),'post count':len(p), 'users':u, 'posts':p}
+        print("godmode ON")
+        return render_template('godmode.html', title="god mode", data=data, user=user)
+    else:
+        flash("You are not ulu reis!", 'warning')
+        return redirect(url_for('home'))
+
+
 @app.route('/noclip/post_sample')
 def post_sample():
     db_check = Post.query.all()
-    if db_check == 0:
+    if len(db_check) == 0:
         f = open(path, 'r')
         j = json.load(f)
 
         # need to arrange str format to regular date format
         def get_date(date):
-            format = '%d %B %Y'
+            format = '%d %b %Y'
             d = datetime.strptime(date, format).date()
             return d
-
-##BU NEDEN OLMADI BU??
-        # for i in range(10):
-        #     auth = get_author(i)
-        #     user = user_list.index(auth)
-        #     user_db = User.query.get(user)
-        #     p = Post(title=get_title(i), date_posted=get_date_posted(
-        #         i), content=get_content(i), author=user_db)
-        #     db.session.add(p)
-        #     db.session.commit()
-
+            
         for i in j:
             usr = User.query.get(user_list.index(i['author'])+1)
             p = Post(title=i['title'], content=i['content'], date_posted=get_date(i['date_posted']), author=usr)
