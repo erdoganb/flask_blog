@@ -69,23 +69,8 @@
         {% endfor %}
         {% endif %}
         {% endwith %}
-
         {% block content %}{% endblock %}
       </div>
-      {%if user %}
-      <div class="col-md-4">
-        <div class="content-section">
-          <h3>Hoşgeldin <b>ulu {{user.title()}}!</b></h3>
-          <p class='text-muted'>Kayıtllar hakkında kısa bilgi.
-          <ul class="list-group">
-            <li class="list-group-item list-group-item-light">Total Users:{{data['user count']}}</li>
-            <li class="list-group-item list-group-item-light">Total Posts:{{data['post count']}}</li>
-            <li class="list-group-item list-group-item-light">cCc</li>
-          </ul>
-          </p>
-        </div>
-      </div>
-      {%else%}
       <div class="col-md-4">
         <div class="content-section">
           <h3>Our Sidebar</h3>
@@ -99,7 +84,6 @@
           </p>
         </div>
       </div>
-      {%endif%}
     </div>
   </main>
 
