@@ -14,7 +14,6 @@ from PIL import Image
 @app.route("/")
 @app.route("/home")
 def home():
-    print(request.args)
     page = request.args.get('page', default=1, type=int)
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=10)
     return render_template('home.html', title="home", posts=posts)
